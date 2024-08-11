@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  ::selection{
+    background-color: #174215;
+    color: #b4b1b1;
+  }
+  :root {
+    --background: 144 50% 95%; /* Light green background */
+    --foreground: 210 10% 20%; /* Darker text for contrast */
+
+    --card: 0 0% 100%; /* White for cards */
+    --card-foreground: 0 0% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    --primary: 144 50% 50%; /* Green primary */
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 144 50% 90%; /* Lighter green for secondary */
+    --secondary-foreground: 0 0% 9%;
+
+    --muted: 144 50% 90%; /* Light green for muted */
+    --muted-foreground: 0 0% 45.1%;
+
+    --accent: 144 50% 90%; /* Light green for accent */
+    --accent-foreground: 0 0% 9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 144 50% 80%; /* Light green for borders */
+    --input: 144 50% 80%; /* Light green for inputs */
+    --ring: 144 50% 50%; /* Green ring */
+
+    --radius: 0.5rem;
+
+    /* Custom properties */
+    --navigation-height: 3.5rem;
+    --color-one: #72afd3; /* Soft blue */
+    --color-two: #9e7aff; /* Light purple */
+    --color-three: #37ecba; /* Soft teal */
+  }
+
+  .dark {
+    --background: 144 50% 5%; /* Darker green for dark mode */
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 144 50% 50%; /* Green primary */
+    --primary-foreground: 0 0% 9%;
+
+    --secondary: 144 50% 20%; /* Darker green for secondary */
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 144 50% 20%; /* Darker green for muted */
+    --muted-foreground: 0 0% 63.9%;
+
+    --accent: 144 50% 20%; /* Darker green for accent */
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 144 50% 30%; /* Darker green for borders */
+    --input: 144 50% 30%; /* Darker green for inputs */
+    --ring: 144 50% 50%; /* Green ring */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
