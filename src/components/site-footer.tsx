@@ -41,7 +41,7 @@ const footerNavs = [
     label: "Legal",
     items: [
       {
-        href: "/terms",
+        href: "/conditions",
         name: "Terms",
       },
 
