@@ -1,4 +1,4 @@
-import { LogOut, Settings } from "lucide-react";
+import { BotIcon, LogOut, Settings } from "lucide-react";
 import { User } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
@@ -38,6 +38,12 @@ export default function UserButton({ user }: UserButtonProps) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
+            <Link href="/app">
+              <BotIcon className="mr-2 h-4 w-4" />
+              <span>App</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href="/app/settings">
               <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
@@ -53,17 +59,16 @@ export default function UserButton({ user }: UserButtonProps) {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-        <form
-      action={async () => {
-        "use server"
-        await signOut({redirectTo:"/"})
-      }}
-    >
+          <form
+            action={async () => {
+              "use server";
+              await signOut({ redirectTo: "/" });
+            }}
+          >
             <button className="flex w-full items-center" type="submit">
               <LogOut className="mr-2 h-4 w-4" /> Sign Out
             </button>
           </form>
-          
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

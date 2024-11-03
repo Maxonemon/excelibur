@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  ::selection{
+  ::selection {
     background-color: #174215;
     color: #b4b1b1;
   }

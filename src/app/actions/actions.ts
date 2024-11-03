@@ -1,29 +1,24 @@
-import { getSession } from "next-auth/react";
+// src/app/actions/updateProfile.ts
+
+"use server";
+
 import { revalidatePath } from "next/cache";
-import prisma from "~/src/lib/prisma";
-import { updateProfileSchema, UpdateProfileValues } from "~/src/lib/validations";
+import { auth } from "~/src/auth";
+import { UpdateProfileValues } from "~/src/lib/validations";
+import { prisma } from "~/src/prisma";
 
-export async function updateProfile(values: UpdateProfileValues): Promise<void> {
+export async function updateProfile(data: UpdateProfileValues) {
+  const session = await auth();
+  const userId = session?.user?.id;
   try {
-    const session = await getSession();
-    const userId = session?.user?.id;
-
-    if (!userId) {
-      console.error("No user ID found in session");
-      throw new Error("Unauthorized");
-    }
-
-    const { name } = updateProfileSchema.parse(values);
-
-    await prisma.user.update({
-      where: {id: userId},
-      data:{name}
-      
+    const updatedUser = await prisma.user.update({
+      where: { id: userId }, // Assuming you have the userId in your data
+      data: { name: data.name },
     });
-
-    revalidatePath("/");
-  } catch (error: any) {
-    console.error("Failed to update profile:", error.message || error);
-    throw new Error("Failed to update profile");
+    revalidatePath("/app/settings");
+    return updatedUser;
+  } catch (error) {
+    console.error("Failed to update profile:", error);
+    throw new Error("Failed to update profile.");
   }
 }

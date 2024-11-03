@@ -40,43 +40,34 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   const router = useRouter(); // Initialize useRouter in the client-side component
 
-  async function onSubmit(data: FormData) {
-    setIsLoading(true);
-    const result = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
-
-    if (result?.ok) {
-      router.push("/app"); // Redirect to /app after successful login
-    } else {
-      toast.error("Something went wrong. Please try again.");
-    }
-    setIsLoading(false);
-  }
-
-  async function onSignIn(provider: string) {
+  const handleOAuthSignIn = async (provider: "google" | "github") => {
     setIsGitHubLoading(provider === "github");
     setIsGoogleLoading(provider === "google");
 
-    const result = await signIn(provider, { redirect: false });
-    console.log;
+    try {
+      const result = await signIn(provider, {
+        redirect: false,
+        callbackUrl: "/app",
+      });
 
-    if (result?.ok) {
-      router.push("/app"); // Redirect to /app after successful login
-    } else {
-      toast.error("Sign-in failed. Please try again.");
+      if (result?.error) {
+        toast.error("❌ Authentication error");
+      } else {
+        toast.success("✅ Successfully authenticated");
+        router.push("/app");
+      }
+    } catch (error) {
+      toast.error("❌ Authentication error");
+    } finally {
+      setIsGitHubLoading(false);
+      setIsGoogleLoading(false);
     }
-
-    setIsGitHubLoading(false);
-    setIsGoogleLoading(false);
-  }
+  };
 
   return (
     <div className={ny("grid gap-6", className)} {...props}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(() => {})}>
           <div className="grid gap-4">
             <FormField
               control={form.control}
@@ -123,7 +114,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       </div>
 
       <button
-        onClick={() => onSignIn("github")}
+        onClick={() => {
+          handleOAuthSignIn("github");
+          // toast("✅ successfully authenticated");
+        }}
         disabled={isLoading || isGitHubLoading || isGoogleLoading}
         className={ny(buttonVariants({ variant: "outline" }))}
       >
@@ -136,7 +130,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       </button>
 
       <button
-        onClick={() => onSignIn("google")}
+        onClick={() => {
+          handleOAuthSignIn("google");
+          // toast("✅ successfully authenticated");
+        }}
         disabled={isLoading || isGitHubLoading || isGoogleLoading}
         className={ny(buttonVariants({ variant: "outline" }))}
       >

@@ -12,13 +12,16 @@ import {
 } from "../../../../components/ui/form";
 import { Input } from "../../../../components/ui/input";
 
-import { UpdateProfileValues, updateProfileSchema } from "../../../../lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import {
+  UpdateProfileValues,
+  updateProfileSchema,
+} from "../../../../lib/validations";
 
-import { toast } from "sonner";
 import { User } from "next-auth";
 import { useTransition } from "react";
+import { toast } from "sonner";
 import { updateProfile } from "~/src/app/actions/updateProfile"; // Import the server action
 
 interface SettingsPageProps {
