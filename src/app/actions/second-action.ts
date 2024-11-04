@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "~/src/auth";
-import prisma from "~/src/prisma";
+import { prisma } from "~/src/prisma";
 
 export async function updatify() {
   const session = await auth();
