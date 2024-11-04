@@ -3,16 +3,16 @@
 import { useChat } from "ai/react";
 import { Send, User } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-
 import { Button } from "~/src/components/ui/button";
 import { Input } from "~/src/components/ui/input";
 import { ScrollArea } from "~/src/components/ui/scroll-area";
 import { ny } from "~/src/lib/utils";
 
-export default function Chatbot() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    api: "/api/chat",
-  });
+export default function Component() {
+  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+    useChat({
+      api: "/api/chat",
+    });
 
   const [isTyping, setIsTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -28,10 +28,8 @@ export default function Chatbot() {
     if (!input.trim()) return;
 
     setIsTyping(true);
-    setTimeout(async () => {
-      setIsTyping(false);
-      await handleSubmit();
-    }, 2000);
+    await handleSubmit(e);
+    setIsTyping(false);
   };
 
   return (
@@ -60,7 +58,7 @@ export default function Chatbot() {
                       : "bg-muted text-muted-foreground"
                   )}
                 >
-                  {isTyping ? (
+                  {message.role === "assistant" && isLoading ? (
                     <div className="flex w-full max-w-md animate-pulse">
                       <div className="rounded-lg bg-muted px-4 py-2 text-muted-foreground">
                         <div className="flex items-center space-x-2">
@@ -82,6 +80,18 @@ export default function Chatbot() {
                 </div>
               </div>
             ))}
+            {isTyping && (
+              <div className="flex w-full max-w-md mr-auto justify-start animate-in fade-in-50 slide-in-from-bottom-5">
+                <div className="rounded-lg bg-muted px-4 py-2 text-muted-foreground shadow-sm">
+                  <div className="flex items-center space-x-2">
+                    <User className="h-4 w-4 shrink-0" />
+                    <div className="h-3 w-3 rounded-full bg-current animate-bounce" />
+                    <div className="h-3 w-3 rounded-full bg-current animate-bounce [animation-delay:0.2s]" />
+                    <div className="h-3 w-3 rounded-full bg-current animate-bounce [animation-delay:0.4s]" />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </ScrollArea>
 
@@ -96,6 +106,7 @@ export default function Chatbot() {
             <Button
               type="submit"
               className="bg-primary text-primary-foreground hover:bg-primary/90"
+              disabled={isLoading || isTyping}
             >
               <Send className="mr-2 h-4 w-4" />
               Send
