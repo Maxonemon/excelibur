@@ -58,40 +58,15 @@ export default function Component() {
                       : "bg-muted text-muted-foreground"
                   )}
                 >
-                  {message.role === "assistant" && isLoading ? (
-                    <div className="flex w-full max-w-md animate-pulse">
-                      <div className="rounded-lg bg-muted px-4 py-2 text-muted-foreground">
-                        <div className="flex items-center space-x-2">
-                          <User className="h-4 w-4 shrink-0" />
-                          <div className="h-3 w-3 rounded-full bg-current" />
-                          <div className="h-3 w-3 rounded-full bg-current" />
-                          <div className="h-3 w-3 rounded-full bg-current" />
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex items-center space-x-2">
-                      {message.role === "assistant" && (
-                        <User className="mb-1 h-4 w-4 shrink-0" />
-                      )}
-                      <p>{message.content}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-            {isTyping && (
-              <div className="flex w-full max-w-md mr-auto justify-start animate-in fade-in-50 slide-in-from-bottom-5">
-                <div className="rounded-lg bg-muted px-4 py-2 text-muted-foreground shadow-sm">
                   <div className="flex items-center space-x-2">
-                    <User className="h-4 w-4 shrink-0" />
-                    <div className="h-3 w-3 rounded-full bg-current animate-bounce" />
-                    <div className="h-3 w-3 rounded-full bg-current animate-bounce [animation-delay:0.2s]" />
-                    <div className="h-3 w-3 rounded-full bg-current animate-bounce [animation-delay:0.4s]" />
+                    {message.role === "assistant" && (
+                      <User className="mb-1 h-4 w-4 shrink-0" />
+                    )}
+                    <p>{message.content}</p>
                   </div>
                 </div>
               </div>
-            )}
+            ))}
           </div>
         </ScrollArea>
 
