@@ -12,9 +12,9 @@
   },
   "dependencies": {
     "@ai-sdk/mistral": "0.0.26",
-    "@auth/core": "^0.37.3",
-    "@auth/nextjs": "0.0.0-380f8d56",
-    "@auth/prisma-adapter": "^2.7.2",
+    "@auth/core": "latest",
+    "@auth/nextjs": "latest",
+    "@auth/prisma-adapter": "latest",
     "@hookform/resolvers": "^3.3.4",
     "@mistralai/mistralai": "0.5.0",
     "@neondatabase/serverless": "^0.9.4",
