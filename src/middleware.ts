@@ -18,9 +18,9 @@ export async function middleware(request: NextRequest) {
 
   // Redirect to login if no session exists
   if (!sessionCookie) {
-    const loginUrl = new URL("/signin", request.url);
-    loginUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(loginUrl);
+    const signinUrl = new URL("/signin", request.url);
+    signinUrl.searchParams.set("callbackUrl", pathname);
+    return NextResponse.redirect(signinUrl);
   }
 
   return NextResponse.next();
