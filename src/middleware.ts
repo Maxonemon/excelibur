@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 // Routes that don't require authentication
-const publicRoutes = ["/", "/login", "/register", "/api/auth"];
+const publicRoutes = ["/", "/signin", "/register", "/api/auth"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
 
   // Redirect to login if no session exists
   if (!sessionCookie) {
-    const loginUrl = new URL("/login", request.url);
+    const loginUrl = new URL("/signin", request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
   }
