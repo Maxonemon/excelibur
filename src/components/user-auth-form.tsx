@@ -45,16 +45,21 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     setIsGoogleLoading(provider === "google");
 
     try {
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
       const result = await signIn(provider, {
         redirect: false,
         callbackUrl: "/app",
+        ...(isIOS && { redirect: true }),
       });
 
-      if (result?.ok) {
-        toast.error("❌ Authentication error");
-      } else {
-        toast.success("✅ Successfully authenticated");
-        router.push("/app");
+      if (!isIOS) {
+        if (result?.ok) {
+          toast.success("✅ Successfully authenticated");
+          router.push("/app");
+        } else {
+          toast.error("❌ Authentication error");
+        }
       }
     } catch (error) {
       toast.error("❌ Authentication error");
@@ -141,7 +146,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <Loader2 className="mr-2 size-4 animate-spin" />
         ) : (
           <Image
-            src="https://authjs.dev/img/providers/google.svg"
+            src="/google.svg"
             alt="google logo"
             width={17}
             height={17}

@@ -1,31 +1,22 @@
 // middleware.ts
+import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-// Routes that don't require authentication
-const publicRoutes = ["/", "/signin", "/register", "/api/auth"];
-
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const token = await getToken({ req: request });
 
-  // Allow public routes
-  if (publicRoutes.some((route) => pathname.startsWith(route))) {
-    return NextResponse.next();
+  const response = NextResponse.next();
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set("Access-Control-Allow-Credentials", "true");
+
+  if (!token) {
+    return NextResponse.redirect(new URL("/signin", request.url));
   }
 
-  // Get session cookie
-  const sessionCookie = request.cookies.get("next-auth.session-token");
-
-  // Redirect to login if no session exists
-  if (!sessionCookie) {
-    const signinUrl = new URL("/signin", request.url);
-    signinUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(signinUrl);
-  }
-
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/app/:path*"],
 };
