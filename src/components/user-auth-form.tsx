@@ -51,10 +51,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       });
 
       if (result?.ok) {
+        toast.error("❌ Authentication error");
+      } else {
         toast.success("✅ Successfully authenticated");
         router.push("/app");
-      } else {
-        toast.error("❌ Authentication error");
       }
     } catch (error) {
       toast.error("❌ Authentication error");
