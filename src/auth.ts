@@ -10,7 +10,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [Google, Github],
   pages: {
-    signIn: "/login",
+    signIn: "/signin",
   },
 
   callbacks: {
@@ -24,8 +24,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       };
     },
     async redirect({ url, baseUrl }) {
-      if (url.startsWith("/thumbnails")) {
-        return `${baseUrl}/thumbnails`;
+      if (url.startsWith("/app")) {
+        return `${baseUrl}/app`;
       }
       if (url.startsWith("/")) {
         return `${baseUrl}${url}`;
