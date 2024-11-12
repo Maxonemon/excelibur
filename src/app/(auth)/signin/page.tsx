@@ -58,14 +58,14 @@ export default function LoginPage() {
     <div
       className={ny(
         "min-h-screen flex items-center justify-center p-4",
-        "bg-gray-100 dark:bg-gray-900"
+        "bg-background"
       )}
     >
       <Link
         href="/"
         className={ny(
-          buttonVariants({ variant: "secondary" }),
-          "absolute left-4 top-4 md:left-8 md:top-8 text-slate-800"
+          buttonVariants({ variant: "ghost" }),
+          "absolute left-4 top-4 md:left-8 md:top-8"
         )}
       >
         <>
@@ -73,19 +73,10 @@ export default function LoginPage() {
           Back
         </>
       </Link>
-      <Card
-        className={ny("w-full max-w-md shadow-lg", "bg-white dark:bg-gray-800")}
-      >
+      <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle
-            className={ny(
-              "text-2xl font-bold",
-              "text-gray-800 dark:text-white"
-            )}
-          >
-            Sign in
-          </CardTitle>
-          <CardDescription className="text-gray-600 dark:text-gray-300">
+          <CardTitle className="text-2xl font-bold">Sign in</CardTitle>
+          <CardDescription>
             Choose your preferred sign-in method
           </CardDescription>
         </CardHeader>
@@ -93,17 +84,8 @@ export default function LoginPage() {
           <div className="grid grid-cols-2 gap-4">
             <Button
               variant="outline"
-              onClick={() => {
-                handleOAuthSignIn("google");
-                // toast("✅ successfully authenticated");
-              }}
+              onClick={() => handleOAuthSignIn("google")}
               disabled={isGoogleLoading || isGitHubLoading}
-              className={ny(
-                "w-full",
-                "text-gray-800 dark:text-white",
-                "border-gray-300 dark:border-gray-600",
-                "hover:bg-gray-50 dark:hover:bg-gray-700"
-              )}
             >
               {isGoogleLoading || isGitHubLoading ? (
                 <Loader2 className="mr-2 size-4 animate-spin" />
@@ -114,17 +96,8 @@ export default function LoginPage() {
             </Button>
             <Button
               variant="outline"
-              onClick={() => {
-                handleOAuthSignIn("github");
-                // toast("✅ successfully authenticated");
-              }}
+              onClick={() => handleOAuthSignIn("github")}
               disabled={isGoogleLoading || isGitHubLoading}
-              className={ny(
-                "w-full",
-                "text-gray-800 dark:text-white",
-                "border-gray-300 dark:border-gray-600",
-                "hover:bg-gray-50 dark:hover:bg-gray-700"
-              )}
             >
               {isGitHubLoading || isGoogleLoading ? (
                 <Loader2 className="mr-2 size-4 animate-spin" />
@@ -136,61 +109,33 @@ export default function LoginPage() {
           </div>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-gray-300 dark:border-gray-600"></span>
+              <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span
-                className={ny(
-                  "px-2 text-gray-600 dark:text-gray-400",
-                  "bg-white dark:bg-gray-800"
-                )}
-              >
+              <span className="bg-background px-2 text-muted-foreground">
                 Or continue with
               </span>
             </div>
           </div>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-800 dark:text-white">
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                className={ny(
-                  "bg-gray-100 dark:bg-gray-700",
-                  "text-gray-800 dark:text-white"
-                )}
-              />
+              <Label>Email</Label>
+              <Input id="email" type="email" placeholder="m@example.com" />
             </div>
             <div className="space-y-2">
-              <Label
-                htmlFor="password"
-                className="text-gray-800 dark:text-white"
-              >
-                Password
-              </Label>
+              <Label>Password</Label>
               <Input
                 id="password"
                 type="password"
                 disabled={isGitHubLoading || isGoogleLoading}
-                className={ny(
-                  "bg-gray-100 dark:bg-gray-700",
-                  "text-gray-800 dark:text-white"
-                )}
               />
             </div>
           </div>
         </CardContent>
         <CardFooter>
           <Button
+            className="w-full"
             disabled={isGitHubLoading || isGoogleLoading}
-            className={ny(
-              "w-full",
-              "bg-red-600 hover:bg-red-700",
-              "text-white"
-            )}
           >
             {isGoogleLoading && (
               <Loader2 className="mr-2 size-4 animate-spin" />
