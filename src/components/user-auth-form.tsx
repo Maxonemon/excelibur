@@ -9,11 +9,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import { signIn } from "~/src/auth";
+import { ny } from "~/src/lib/utils";
 import { buttonVariants } from "./ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
-import { ny } from "~/src/lib/utils";
-import { signIn } from "~/src/auth";
 
 export const userAuthSchema = z.object({
   email: z.string().email(),
@@ -66,7 +66,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         router.push("/app");
         router.refresh();
       } else {
-        toast.error("Something went wrong");
+        toast.error("❌Something went wrong");
       }
     } catch (error) {
       toast.error("Something went wrong");
