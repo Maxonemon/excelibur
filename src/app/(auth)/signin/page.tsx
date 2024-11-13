@@ -36,7 +36,6 @@ export default function LoginPage() {
       setIsGoogleLoading(provider === "google");
 
       const result = await signIn(provider, {
-        redirect: false,
         callbackUrl: "/app",
       });
 
