@@ -31,80 +31,37 @@ export default function LoginPage() {
   const router = useRouter();
 
   const handleOAuthSignIn = async (provider: "google" | "github") => {
-    setIsGitHubLoading(provider === "github");
-    setIsGoogleLoading(provider === "google");
-
-    const toastId = toast.loading(`Connecting to ${provider}...`);
-
     try {
-      console.log("Starting sign in with provider:", provider);
+      setIsGitHubLoading(provider === "github");
+      setIsGoogleLoading(provider === "google");
 
       const result = await signIn(provider, {
         redirect: false,
         callbackUrl: "/app",
       });
-      if (
-        typeof result === "undefined" ||
-        typeof result === "undefined" ||
-        typeof result === "undefined"
-      ) {
-        toast.error("No response from authentication provider");
-      }
-
-      console.log("SignIn Response:", {
-        result,
-        error: result?.error,
-        status: result?.status,
-        ok: result?.ok,
-        url: result?.url,
-      });
 
       if (!result) {
-        throw new Error("No response from authentication provider");
+        toast.error("Authentication failed", {
+          description: "No response from authentication provider",
+        });
+        return;
       }
 
-      if (result?.error) {
-        // Handle specific error cases
-        let errorMessage = "Please try again";
-        switch (result.error) {
-          case "OAuthSignin":
-            errorMessage = "Could not initiate sign in. Please try again.";
-            break;
-          case "OAuthCallback":
-            errorMessage = "Could not complete sign in. Please try again.";
-            break;
-          case "OAuthCreateAccount":
-            errorMessage = "Could not create account. Email might be taken.";
-            break;
-          case "EmailCreateAccount":
-            errorMessage = "Could not create account. Please try again.";
-            break;
-          case "Callback":
-            errorMessage = "Invalid credentials or unauthorized access.";
-            break;
-          case "AccessDenied":
-            errorMessage = "Access denied. You may not have permission.";
-            break;
-          default:
-            errorMessage = "Authentication failed. Please try again.";
-        }
-
-        toast.error("Authentication Failed", {
-          id: toastId,
-          description: errorMessage,
+      if (result.error) {
+        toast.error("Authentication failed", {
+          description: "Could not sign in with your account. Please try again.",
         });
-      } else {
-        toast.success("Welcome!", {
-          id: toastId,
-          description: "Redirecting you to the dashboard...",
-        });
-        router.push("/app");
+        return;
       }
+
+      toast.success("Successfully signed in!", {
+        description: "Redirecting you to the dashboard...",
+      });
+
+      router.push("/app");
     } catch (error) {
-      toast.error("Connection Error", {
-        id: toastId,
-        description:
-          "Could not connect to authentication service. Please check your internet connection.",
+      toast.error("Authentication failed", {
+        description: "An unexpected error occurred. Please try again.",
       });
     } finally {
       setIsGitHubLoading(false);
