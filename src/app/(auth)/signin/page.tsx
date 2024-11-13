@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import GoogleLogoIcon from "~/src/components/google-logo-icon";
+import { GoogleLogoIcon } from "~/src/components/google-logo-icon";
 import { Button, buttonVariants } from "~/src/components/ui/button";
 import {
   Card,
@@ -34,20 +34,59 @@ export default function LoginPage() {
     setIsGitHubLoading(provider === "github");
     setIsGoogleLoading(provider === "google");
 
+    // Show processing toast
+    const toastId = toast.loading(`Connecting to ${provider}...`);
+
     try {
       const result = await signIn(provider, {
         redirect: false,
         callbackUrl: "/app",
       });
+      console.log(result);
 
       if (result?.error) {
-        toast.error("❌ Authentication error");
+        // Handle specific error cases
+        let errorMessage = "Please try again";
+        switch (result.error) {
+          case "OAuthSignin":
+            errorMessage = "Could not initiate sign in. Please try again.";
+            break;
+          case "OAuthCallback":
+            errorMessage = "Could not complete sign in. Please try again.";
+            break;
+          case "OAuthCreateAccount":
+            errorMessage = "Could not create account. Email might be taken.";
+            break;
+          case "EmailCreateAccount":
+            errorMessage = "Could not create account. Please try again.";
+            break;
+          case "Callback":
+            errorMessage = "Invalid credentials or unauthorized access.";
+            break;
+          case "AccessDenied":
+            errorMessage = "Access denied. You may not have permission.";
+            break;
+          default:
+            errorMessage = "Authentication failed. Please try again.";
+        }
+
+        toast.error("Authentication Failed", {
+          id: toastId,
+          description: errorMessage,
+        });
       } else {
-        toast.success("✅ Successfully authenticated");
+        toast.success("Welcome!", {
+          id: toastId,
+          description: "Redirecting you to the dashboard...",
+        });
         router.push("/app");
       }
     } catch (error) {
-      toast.error("❌ Authentication error");
+      toast.error("Connection Error", {
+        id: toastId,
+        description:
+          "Could not connect to authentication service. Please check your internet connection.",
+      });
     } finally {
       setIsGitHubLoading(false);
       setIsGoogleLoading(false);
@@ -73,7 +112,7 @@ export default function LoginPage() {
           Back
         </>
       </Link>
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md bg-background">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Sign in</CardTitle>
           <CardDescription>
