@@ -34,15 +34,34 @@ export default function LoginPage() {
     setIsGitHubLoading(provider === "github");
     setIsGoogleLoading(provider === "google");
 
-    // Show processing toast
     const toastId = toast.loading(`Connecting to ${provider}...`);
 
     try {
+      console.log("Starting sign in with provider:", provider);
+
       const result = await signIn(provider, {
         redirect: false,
         callbackUrl: "/app",
       });
-      console.log(result);
+      if (
+        typeof result === "undefined" ||
+        typeof result === "undefined" ||
+        typeof result === "undefined"
+      ) {
+        toast.error("No response from authentication provider");
+      }
+
+      console.log("SignIn Response:", {
+        result,
+        error: result?.error,
+        status: result?.status,
+        ok: result?.ok,
+        url: result?.url,
+      });
+
+      if (!result) {
+        throw new Error("No response from authentication provider");
+      }
 
       if (result?.error) {
         // Handle specific error cases
