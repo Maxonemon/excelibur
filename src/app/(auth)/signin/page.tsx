@@ -54,10 +54,6 @@ export default function LoginPage() {
         return;
       }
 
-      toast.success("Successfully signed in!", {
-        description: "Redirecting you to the dashboard...",
-      });
-
       router.push("/app");
     } catch (error) {
       toast.error("Authentication failed", {
