@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "ai/react";
-import { Send, User } from "lucide-react";
+import { BotIcon, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "~/src/components/ui/button";
 import { Input } from "~/src/components/ui/input";
@@ -63,7 +63,7 @@ export default function Component() {
                 >
                   <div className="flex items-center space-x-2.5">
                     {message.role === "assistant" && (
-                      <User className="mb-0.5 h-4 w-4 shrink-0 opacity-80" />
+                      <BotIcon className="mb-0.5 h-4 w-4 shrink-0 opacity-80" />
                     )}
                     <p className="leading-relaxed">{message.content}</p>
                   </div>
